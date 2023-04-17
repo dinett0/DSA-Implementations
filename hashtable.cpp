@@ -14,7 +14,7 @@
 //		-Trivial hash function implementation
 //		-Rehash is not implemented
 //		-Two constructors
-//		-Methods: insert, remove, find, cap, size, empty
+//		-Methods: insert, remove, find, cap, size, empty, print
 #include <iostream>
 #include <iomanip>
 #include <random>
