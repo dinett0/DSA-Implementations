@@ -12,11 +12,11 @@
 
 	//Future:
 	// -All copy operations to move
-	// -MyVector() : m_size(0), m_capacity(0), m_data(nullptr) {}
 	// -Initializer-list
 	// -Template
 
 	//Features:
+	// -MyVector() : m_size(0), m_capacity(0), m_data(nullptr) {}
 	// -Display using bit-shifting +
 	// -Copy-Constructor +
 	// -Index access +
@@ -27,20 +27,18 @@
 namespace Vector {
 
 	class Vector {//just implement integer vector
-		int* arr = nullptr;
-		int m_size{};
-		int m_capacity{};
+		int m_size;
+		int m_capacity;
+		int* arr;
 
 	public:
 		Vector()
-		{
-		}
+			: m_size(0), m_capacity(0), arr(nullptr) 
+		{}
 
-		Vector(int size) {
-			this->m_size = size;
-			this->m_capacity = 2 * size;
-			arr = new int[m_capacity] {};
-		}
+		Vector(int size)
+			: m_size(0), m_capacity(size * 2), arr(new int[m_capacity] {})
+		{}
 
 		Vector(const Vector& other) {//Copy-Constructor
 			this->m_size = other.m_size;
@@ -50,6 +48,11 @@ namespace Vector {
 			for (size_t i = 0; i < m_size; i++)
 				this->arr[i] = other[i];
 		}
+
+		//Vector(std::initializer_list<int> init)
+		//{
+		//	head_ = copy(il, il.size()); //some form of recursive copy-function
+		//}
 
 		~Vector() {
 			delete[] arr;
@@ -124,7 +127,8 @@ namespace Vector {
 			}
 			return;
 		}
-////MINOR//METHODS/////////////////////////////////////////////////////////////////////////////////
+		////MINOR//METHODS/////////////////////////////////////////////////////////////////////////////////
+
 		int size() const {
 			return m_size;
 		}
@@ -150,19 +154,19 @@ namespace Vector {
 		}
 
 		friend std::ostream& operator<<(std::ostream& stream, const Vector& vector);
-///////////////////////////////////////////////////////////////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////////////////////////////////////
 	};
 
 	std::ostream& operator<<(std::ostream& stream, const Vector& vector) {
-		std::cout << "[ ";
+		stream.put('[');
+		char comma[3] = { '\0', ' ', '\0' };//C++ has 2 types of strings: class and C-like
 		for (size_t i = 0; i < vector.size(); i++) {
-			stream << vector[i] << " ";
+			stream << comma << vector[i];
+			comma[0] = ',';
 		}
-		std::cout << "]\n";
-		return stream;
+		return stream << ']';
 	}
 }
 
 int main() {
-
 }
