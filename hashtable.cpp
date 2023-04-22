@@ -15,6 +15,10 @@
 //		-Rehash is not implemented
 //		-Two constructors
 //		-Methods: insert, remove, find, cap, size, empty
+
+//v1.1 -Reimplemented constructors using init-list
+//	   -Class members renaming('m_' prefix)
+
 #include <iostream>
 #include <iomanip>
 #include <random>
@@ -28,7 +32,6 @@ T random(T range_from, T range_to) {
 	return distr(generator);
 }
 
-
 struct element {
 	element* next = nullptr;
 	int data{};
@@ -38,11 +41,11 @@ class hash_table {
 	const double LOAD_FACTOR{ 0.75 };
 	const int DEFAULT_CAPACITY{ 20 };//no magic numbers
 	
+	int m_size{}, m_capacity{};
 	element** buckets{ nullptr };
-	int si{}, capacity{};
 
 	int hash_function(const int value) {
-		return value % capacity;
+		return value % m_capacity;
 	}
 
 	element* find_internal(const int value) {//tested
@@ -106,7 +109,7 @@ class hash_table {
 					delete head;
 					prev->next = tmp;
 				}
-				si--;
+				m_size--;
 				return 0;
 			}
 			prev = head;
@@ -116,15 +119,13 @@ class hash_table {
 	}
 
 public:
-	hash_table() {//teseted?
-		this->capacity = DEFAULT_CAPACITY;
-		this->buckets = new element * [capacity]{};
-	}
+	hash_table()
+		: m_capacity(DEFAULT_CAPACITY), buckets(new element* [m_capacity] {})
+	{}
 
-	hash_table(const int capacity) {//tested?
-		this->capacity = capacity;
-		this->buckets = new element * [capacity]{};
-	}
+	hash_table(const int m_capacity)
+		:m_capacity(m_capacity), buckets(new element* [m_capacity] {})
+	{}
 
 	void insert(const int value) {//tested
 		int hash = hash_function(value);
@@ -140,7 +141,7 @@ public:
 		else//else if its free
 			buckets[hash] = new element{ nullptr, value };
 		cout << "inserted on bucket[" << hash << "]\n";
-		si++;//NO DUPLICATES HANDLING
+		m_size++;//NO DUPLICATES HANDLING
 	}
 
 	//BADVERSIONBADVERSIONBADVERSIONBADVERSIONBADVERSIONBADVERSIONBADVERSIONBADVERSIONBADVERSIONBADVERSION
@@ -181,7 +182,7 @@ public:
 	}
 
 	void print() {//tested
-		for (size_t i = 0; i < capacity; i++)
+		for (size_t i = 0; i < m_capacity; i++)
 		{
 			element* tmp = buckets[i];
 			cout << "[" << setw(2) << i << "]";
@@ -203,15 +204,15 @@ public:
 	}
 
 	int cap() {
-		return capacity;
+		return m_capacity;
 	}
 
 	int size() {
-		return si;
+		return m_size;
 	}
 	
 	bool empty() {
-		return !si;
+		return !m_size;
 	}
 };
 
@@ -257,5 +258,11 @@ void test_remove() {
 }
 
 int main() {
+	hash_table ht(40);
+	for (size_t i = 0; i < ht.cap(); i++)
+	{
+		ht.insert(random(0, 999));
+	}
 
+	ht.print();
 }
