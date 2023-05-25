@@ -19,6 +19,7 @@
 //v1.1 -Reimplemented constructors using init-list
 //	   -Class members renaming('m_' prefix)
 
+//v1.2 -A bit of refactoring and beautification
 #include <iostream>
 #include <iomanip>
 #include <random>
@@ -73,10 +74,8 @@ class hash_table {
 			element* tmp = buckets[hash];
 			while (tmp != nullptr)
 			{
-				if (tmp->data == value)
-				{
+				if (tmp->data == value) 
 					return tmp;
-				}
 				tmp = tmp->next;
 			}
 		}
@@ -101,14 +100,9 @@ class hash_table {
 		{
 			if (head->data == value)
 			{
-				if (head->next == nullptr) {//last one in the chain
-					delete head;
-					prev->next = nullptr;
-				} else {
-					element* tmp = head->next;//otherwise
-					delete head;
-					prev->next = tmp;
-				}
+				element* tmp = head->next;
+				delete head;
+				prev->next = tmp;
 				m_size--;
 				return 0;
 			}
@@ -133,9 +127,8 @@ public:
 		{
 			element* tmp = buckets[hash];
 			while (tmp -> next)//traverse to the end of chain
-			{
 				tmp = tmp->next;
-			}
+			
 			tmp->next = new element{ nullptr, value };
 		}
 		else//else if its free
@@ -171,14 +164,7 @@ public:
 	//}
 
 	void remove(const int value) {//wrapper
-		if (!remove_internal(value))
-		{
-			cout << "removed\n";
-		}
-		else
-		{
-			cout << "no such element\n";
-		}
+		cout << (!remove_internal(value)? "removed\n": "no such element\n");
 	}
 
 	void print() {//tested
